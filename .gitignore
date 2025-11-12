@@ -1,0 +1,11 @@
+# Dependencies
+/node_modules
+
+# Environment Variables (CRITICAL)
+.env
+.env.*
+
+# Logs and Build Files
+*.log
+/dist
+/build

@@ -1,15 +1,22 @@
-// Function to generate the JWT token
-const jwt = require('jsonwebtoken');
+// backend/controllers/userController.js
 
+// --- Corrected Imports ---
+// 1. JWT is required once
+const jwt = require('jsonwebtoken'); 
+// 2. User Model is required once (The previous fix)
+const User = require('../models/User'); 
+// -------------------------
+
+// Function to generate the JWT token
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRE, // e.g., '30d'
     });
 };
 
-// @desc    Register a new user
-// @route   POST /api/users/register
-// @access  Public (or Admin-only for staff/driver roles)
+// @desc      Register a new user
+// @route     POST /api/users/register
+// @access    Public (or Admin-only for staff/driver roles)
 const registerUser = async (req, res) => {
     // You should use validateRequest.js middleware to ensure fields are clean
     const { name, email, password, role, busId, childBusId } = req.body;
@@ -18,7 +25,8 @@ const registerUser = async (req, res) => {
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-        res.status(400);
+        // Use the error handling middleware pattern
+        res.status(400); 
         throw new Error('User already exists');
     }
 
@@ -47,9 +55,9 @@ const registerUser = async (req, res) => {
 };
 
 
-// @desc    Authenticate user & get token
-// @route   POST /api/users/login
-// @access  Public
+// @desc      Authenticate user & get token
+// @route     POST /api/users/login
+// @access    Public
 const authUser = async (req, res) => {
     const { email, password } = req.body;
 
